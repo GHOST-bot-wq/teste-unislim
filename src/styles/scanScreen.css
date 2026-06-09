@@ -605,3 +605,115 @@
   color: var(--text-tertiary);
   margin-top: 2px;
 }
+
+/* ────────────────────────────────────────────────────────
+   CALORIES HERO & MACROS PROGRESS BARS
+   ──────────────────────────────────────────────────────── */
+.calories-hero-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(123, 97, 255, 0.02) 100%);
+  border-radius: 24px;
+  border: 1px solid var(--border-subtle);
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.calories-hero-card .lbl {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.calories-hero-card .val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+}
+
+.calories-hero-card .val strong {
+  color: var(--color-primary);
+}
+
+.macros-progress-card {
+  background-color: var(--bg-card);
+  border-radius: 24px;
+  border: 1px solid var(--border-subtle);
+  padding: 20px;
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.macro-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.macro-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 105px;
+  flex-shrink: 0;
+}
+
+.macro-info .emoji {
+  font-size: 18px;
+}
+
+.macro-info .label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background-color: var(--bg-input);
+  border-radius: var(--border-radius-pill);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--border-radius-pill);
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-fill.protein {
+  background-color: var(--color-secondary); /* Sage Green */
+  box-shadow: 0 0 8px rgba(84, 180, 137, 0.2);
+}
+
+.progress-fill.carbs {
+  background-color: var(--color-accent); /* Peach */
+  box-shadow: 0 0 8px rgba(244, 160, 144, 0.2);
+}
+
+.progress-fill.fat {
+  background-color: var(--color-primary); /* Lavender */
+  box-shadow: 0 0 8px rgba(123, 97, 255, 0.2);
+}
+
+.macro-progress-row .value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--text-primary);
+  width: 45px;
+  text-align: right;
+  flex-shrink: 0;
+}

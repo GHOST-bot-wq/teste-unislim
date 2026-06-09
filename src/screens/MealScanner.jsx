@@ -532,39 +532,45 @@ As regras para as propriedades são:
             </div>
           </div>
 
-          {/* Ficha técnica calórica */}
-          <div className="scan-calories-detail-card">
-            <div className="label-grp">
-              <span className="lbl">Estimado por porção</span>
-              <span className="val">{result.calories} kcal</span>
-            </div>
-            <MiniRing calories={result.calories} />
+          {/* Ficha técnica calórica (Destaque no topo) */}
+          <div className="calories-hero-card">
+            <span className="lbl">Calorias Estimadas</span>
+            <span className="val"><strong>{result.calories}</strong> kcal</span>
           </div>
 
-          {/* Grid de Macros */}
-          <div className="last-scanned-card" style={{ padding: '0', border: 'none', boxShadow: 'none', backgroundColor: 'transparent' }}>
-            <div className="macros-mini-grid" style={{ border: 'none', paddingTop: '0' }}>
-              <div className="macro-item" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: '18px' }}>
+          {/* Barras de progresso individuais para cada macro */}
+          <div className="macros-progress-card">
+            <div className="macro-progress-row">
+              <div className="macro-info">
                 <span className="emoji">🥩</span>
-                <div className="macro-details">
-                  <span className="macro-label">Proteína</span>
-                  <span className="macro-value">{result.protein}g</span>
-                </div>
+                <span className="label">Proteína</span>
               </div>
-              <div className="macro-item" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: '18px' }}>
+              <div className="progress-track">
+                <div className="progress-fill protein" style={{ width: `${Math.min(100, (result.protein / 50) * 100)}%` }} />
+              </div>
+              <span className="value">{result.protein}g</span>
+            </div>
+
+            <div className="macro-progress-row">
+              <div className="macro-info">
                 <span className="emoji">🌾</span>
-                <div className="macro-details">
-                  <span className="macro-label">Carbo</span>
-                  <span className="macro-value">{result.carbs}g</span>
-                </div>
+                <span className="label">Carbo</span>
               </div>
-              <div className="macro-item" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: '18px' }}>
-                <span className="emoji">🫒</span>
-                <div className="macro-details">
-                  <span className="macro-label">Gordura</span>
-                  <span className="macro-value">{result.fat}g</span>
-                </div>
+              <div className="progress-track">
+                <div className="progress-fill carbs" style={{ width: `${Math.min(100, (result.carbs / 100) * 100)}%` }} />
               </div>
+              <span className="value">{result.carbs}g</span>
+            </div>
+
+            <div className="macro-progress-row">
+              <div className="macro-info">
+                <span className="emoji">🥑</span>
+                <span className="label">Gordura</span>
+              </div>
+              <div className="progress-track">
+                <div className="progress-fill fat" style={{ width: `${Math.min(100, (result.fat / 30) * 100)}%` }} />
+              </div>
+              <span className="value">{result.fat}g</span>
             </div>
           </div>
 
