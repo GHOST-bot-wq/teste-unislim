@@ -117,10 +117,6 @@ const MealScanner = () => {
   const [result, setResult] = useState(null);
   const [saved, setSaved] = useState(false);
 
-  // Configuração da Chave de API do Gemini para detecção real
-  const [geminiKey, setGeminiKey] = useState(() => localStorage.getItem('unislim_gemini_key') || '');
-  const [showKeyConfig, setShowKeyConfig] = useState(false);
-  const [tempKey, setTempKey] = useState(geminiKey);
 
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
@@ -158,7 +154,7 @@ As regras para as propriedades são:
 - tags: array de strings com 2 ou 3 tags curtas e estratégicas (ex: ["Rico em Fibras", "Leve"]).
 - feedback: uma breve explicação nutricional estratégica em português.`;
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -222,7 +218,7 @@ As regras para as propriedades são:
     setLoadingStep(0);
     setLoadingProgress(0);
 
-    const activeKey = geminiKey || import.meta.env.VITE_GEMINI_API_KEY || '';
+    const activeKey = import.meta.env.VITE_GEMINI_API_KEY || '';
     let apiResult = null;
     let apiError = null;
 
@@ -297,41 +293,18 @@ As regras para as propriedades são:
     setLoadingProgress(0);
   };
 
-  // Componente de mini anel calórico
-  const MiniRing = ({ calories }) => {
-    const max = 750;
-    const pct = Math.min(calories / max, 1);
-    const r = 18;
-    const circ = 2 * Math.PI * r;
-    const offset = circ * (1 - pct);
 
-    return (
-      <svg width="46" height="46" viewBox="0 0 46 46">
-        <circle cx="23" cy="23" r={r} fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="4" />
-        <circle
-          cx="23" cy="23" r={r} fill="none"
-          stroke="var(--color-primary)" strokeWidth="4"
-          strokeDasharray={circ} strokeDashoffset={offset}
-          strokeLinecap="round"
-          transform="rotate(-90 23 23)"
-          style={{ transition: 'stroke-dashoffset 0.8s ease' }}
-        />
-      </svg>
-    );
-  };
 
   /* ────────────────────────────────────────────────────────
      FASE 1: IDLE (TELA INICIAL DE CÂMERA SIMULADA)
      ──────────────────────────────────────────────────────── */
   if (phase === 'idle') {
-    const hasActiveKey = geminiKey || import.meta.env.VITE_GEMINI_API_KEY;
-
     return (
       <div className="screen-container scanner-container">
         <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileSelect} />
         <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={handleFileSelect} />
 
-        <header style={{ marginBottom: '8px' }}>
+        <header style={{ marginBottom: '16px' }}>
           <div className="scanner-header-badge">
             <span className="scanner-header-badge-dot" />
             Scanner Inteligente
@@ -341,56 +314,6 @@ As regras para as propriedades são:
             Aponte a câmera para seu prato de comida e descubra calorias e macronutrientes instantaneamente por IA.
           </p>
         </header>
-
-        {/* Gemini API Key Config */}
-        <div className={`gemini-key-card ${hasActiveKey ? 'active' : 'inactive'}`}>
-          <div className="gemini-key-header" onClick={() => setShowKeyConfig(!showKeyConfig)}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className={`status-dot ${hasActiveKey ? 'active' : 'inactive'}`} />
-              <span className="status-text">
-                {hasActiveKey ? 'IA Real Ativa (Gemini)' : 'Modo Simulação (Sem Chave)'}
-              </span>
-            </div>
-            <button className="btn-key-toggle">
-              {showKeyConfig ? 'Fechar ✕' : 'Configurar Key ⚙️'}
-            </button>
-          </div>
-
-          {showKeyConfig && (
-            <div className="gemini-key-dropdown">
-              <p className="dropdown-info">
-                Para analisar imagens reais de alimentos de forma 100% fiel, insira uma chave de API gratuita do Gemini:
-              </p>
-              <div className="key-input-row">
-                <input
-                  type="password"
-                  placeholder="Cole sua API Key do Gemini..."
-                  value={tempKey}
-                  onChange={(e) => setTempKey(e.target.value)}
-                  className="key-input"
-                />
-                <button
-                  onClick={() => {
-                    const cleanKey = tempKey.trim();
-                    setGeminiKey(cleanKey);
-                    if (cleanKey) {
-                      localStorage.setItem('unislim_gemini_key', cleanKey);
-                    } else {
-                      localStorage.removeItem('unislim_gemini_key');
-                    }
-                    setShowKeyConfig(false);
-                  }}
-                  className="btn-key-save"
-                >
-                  Salvar
-                </button>
-              </div>
-              <p className="dropdown-help">
-                Como obter uma chave? Crie grátis no <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', fontWeight: '700', textDecoration: 'underline' }}>Google AI Studio</a>.
-              </p>
-            </div>
-          )}
-        </div>
 
         {/* Câmera Simulada Premium */}
         <div className="scan-camera-fake" onClick={() => cameraInputRef.current?.click()}>
